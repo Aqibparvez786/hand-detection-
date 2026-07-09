@@ -7,9 +7,7 @@ mp_hands = mp.solutions.hands
 hands = mp_hands.Hands()
 mp_draw = mp.solutions.drawing_utils
 
-# -----------------------------
-# Store all strokes
-# -----------------------------
+
 strokes = []
 previous_drawing_mode = False
 
@@ -40,17 +38,13 @@ while True:
 
             lm = hand_landmarks.landmark
 
-            # -----------------------------
-            # Finger states
-            # -----------------------------
+
             index_up = lm[8].y < lm[6].y
             middle_up = lm[12].y < lm[10].y
             ring_up = lm[16].y < lm[14].y
             pinky_up = lm[20].y < lm[18].y
 
-            # -----------------------------
-            # Gestures
-            # -----------------------------
+
             drawing_mode = (
                 index_up and
                 not middle_up and
@@ -68,9 +62,7 @@ while True:
             cx = int(lm[8].x * w)
             cy = int(lm[8].y * h)
 
-            # -----------------------------
-            # Cursor
-            # -----------------------------
+
             if eraser_mode:
                 cv2.circle(
                     frame,
@@ -88,9 +80,7 @@ while True:
                     cv2.FILLED
                 )
 
-            # -----------------------------
-            # Start a new stroke
-            # -----------------------------
+
             if drawing_mode:
 
                 if not previous_drawing_mode:
@@ -98,9 +88,7 @@ while True:
 
                 strokes[-1].append((cx, cy))
 
-            # -----------------------------
-            # Erase nearby points
-            # -----------------------------
+
             if eraser_mode:
 
                 for stroke in strokes[:]:
@@ -119,9 +107,7 @@ while True:
 
     previous_drawing_mode = drawing_mode
 
-    # -----------------------------
-    # Draw all strokes
-    # -----------------------------
+
     for stroke in strokes:
 
         for i in range(len(stroke) - 1):
@@ -134,9 +120,7 @@ while True:
                 5
             )
 
-    # -----------------------------
-    # Status text
-    # -----------------------------
+
     if drawing_mode:
         cv2.putText(
             frame,
